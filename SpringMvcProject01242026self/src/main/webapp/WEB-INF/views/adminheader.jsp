@@ -54,7 +54,7 @@
 			placeholder="Search" aria-label="Search">
 		<div class="navbar-nav">
 			<div class="nav-item text-nowrap">
-				<a class="nav-link px-3" href="logout">Sign out</a>
+				<a class="nav-link px-3" href="${contextPath}/admin/logout">Sign out</a>
 			</div>
 		</div>
 	</header>

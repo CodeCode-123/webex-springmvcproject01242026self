@@ -66,7 +66,7 @@ public class UsersController {
 		// delete the object
 		userService.deleteUser(id);
 		// return the view
-		return new ModelAndView("redirect:/admin/");
+		return new ModelAndView("redirect:/admin/users/");
 	}
 	/*
 	@RequestMapping(value="/save", method=RequestMethod.POST) //explicit define POST in the form
@@ -118,7 +118,7 @@ public class UsersController {
 		// save the object
 		userService.addUser(users);
 		// return the view
-		return new ModelAndView("redirect:/admin/");
+		return new ModelAndView("redirect:/admin/users/");
 	}
 	@RequestMapping(value="/editsave", method=RequestMethod.POST)
 	public ModelAndView updateRegistration(@ModelAttribute("users") UsersDto usersDto,
@@ -145,7 +145,7 @@ public class UsersController {
 		// update the object
 		userService.updateUser(users);
 		// return the view
-		return new ModelAndView("redirect:/admin/");
+		return new ModelAndView("redirect:/admin/users/");
 	}
 	@RequestMapping(value="/image/{id}")
 	public void getImage(@PathVariable("id") int id, HttpServletRequest request, 

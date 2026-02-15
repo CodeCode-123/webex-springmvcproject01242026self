@@ -34,6 +34,6 @@
 		</table>
 	</form>
 	<br>
-	<a href="users/registration">New user Sign Up</a>
+	<a href="registration">New user Sign Up</a>
 </body>
 </html>
