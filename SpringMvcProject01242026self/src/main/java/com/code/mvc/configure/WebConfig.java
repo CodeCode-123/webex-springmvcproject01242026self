@@ -1,6 +1,7 @@
 package com.code.mvc.configure;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -23,6 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
 		    		"/admin/login",
 		    		"/admin/login/",
 		    		"/admin/authentication",
+		    		"/admin/users/registration",
 		    		"/admin/logout",
 		    		"/css/**", "/js/**", "/images/**");
 		

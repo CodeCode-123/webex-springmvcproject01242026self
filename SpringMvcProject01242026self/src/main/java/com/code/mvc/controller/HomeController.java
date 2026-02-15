@@ -17,6 +17,7 @@ public class HomeController {
 	public ModelAndView test(HttpServletResponse response) throws IOException{
 		return new ModelAndView("home");
 	}
+	/* login.jsp has be replaced by adminlogin.jsp
 	@RequestMapping("/login")
 	public ModelAndView login() {
 		return new ModelAndView("login");
@@ -36,5 +37,5 @@ public class HomeController {
 		String msg="Invalid User name & password";
 		model.addAttribute("error", msg);
 		return new ModelAndView("login","",model);
-	}
+	} */
 }

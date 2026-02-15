@@ -29,7 +29,6 @@ public class AdminController {
 	public AdminController(IUserService userService) {
 		this.userService=userService;
 	}
-	
 	@RequestMapping("/")
 	public ModelAndView getRoot(Model model) {
 		List<Users> lstusers = userService.getAll();
@@ -89,7 +88,8 @@ public class AdminController {
 		// delete the object
 		userService.deleteUser(id);
 		// return the view
-		return new ModelAndView("redirect:/users/");
+		//return new ModelAndView("redirect:/users/");
+		return new ModelAndView("redirect:/admin/");
 	}
 	@RequestMapping(value="/save1", method=RequestMethod.POST)
 	public ModelAndView save1Registration(@ModelAttribute("users") Users users,
@@ -112,7 +112,8 @@ public class AdminController {
 		// save the object
 		userService.addUser(users);
 		// return the view
-		return new ModelAndView("redirect:/users/");
+		//return new ModelAndView("redirect:/users/");
+		return new ModelAndView("redirect:/admin/");
 	}
 	@RequestMapping(value="/editsave", method=RequestMethod.POST)
 	public ModelAndView updateRegistration(@ModelAttribute("users") UsersDto usersDto,
@@ -139,7 +140,8 @@ public class AdminController {
 		// update the object
 		userService.updateUser(users);
 		// return the view
-		return new ModelAndView("redirect:/users/");
+		//return new ModelAndView("redirect:/users/");
+		return new ModelAndView("redirect:/admin/");
 	}
 	@RequestMapping(value="/image/{id}")
 	public void getImage(@PathVariable("id") int id, HttpServletRequest request, 
@@ -152,5 +154,11 @@ public class AdminController {
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
+	}
+	@RequestMapping(value="/logout")
+	public ModelAndView logout(HttpSession session) {
+		// clear the session object
+		session.invalidate();
+		return new ModelAndView("redirect:/admin/");
 	}
 }

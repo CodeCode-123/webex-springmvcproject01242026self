@@ -3,6 +3,8 @@ package com.code.mvc.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,7 @@ import com.code.mvc.entity.Users;
 import com.code.mvc.services.IUserService;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("admin/users/")
 public class UsersController {
 	// add dependency
 	private final IUserService userService;
@@ -33,7 +35,7 @@ public class UsersController {
 		model.addAttribute("lstusers", lstusers);
 		//model.addAttribute("users", new Users());
 		// return the view
-		return new ModelAndView("dashboard","",model);
+		return new ModelAndView("manageusers","",model);
 	}
 	@RequestMapping("/registration")
 	public ModelAndView getRegistration(Model model) {
@@ -64,8 +66,9 @@ public class UsersController {
 		// delete the object
 		userService.deleteUser(id);
 		// return the view
-		return new ModelAndView("redirect:/users/");
+		return new ModelAndView("redirect:/admin/");
 	}
+	/*
 	@RequestMapping(value="/save", method=RequestMethod.POST) //explicit define POST in the form
 	public ModelAndView saveRegistration(HttpServletRequest request, Model model) {
 		String firstName=request.getParameter("fname");
@@ -93,7 +96,7 @@ public class UsersController {
 		model.addAttribute("country", country);
 		// return the view
 		return new ModelAndView("confirm","",model);
-	}
+	}*/
 	@RequestMapping(value="/save1", method=RequestMethod.POST)
 	public ModelAndView save1Registration(@ModelAttribute("users") Users users,
 			@RequestParam CommonsMultipartFile[] imagefile,
@@ -115,7 +118,7 @@ public class UsersController {
 		// save the object
 		userService.addUser(users);
 		// return the view
-		return new ModelAndView("redirect:/users/");
+		return new ModelAndView("redirect:/admin/");
 	}
 	@RequestMapping(value="/editsave", method=RequestMethod.POST)
 	public ModelAndView updateRegistration(@ModelAttribute("users") UsersDto usersDto,
@@ -142,7 +145,7 @@ public class UsersController {
 		// update the object
 		userService.updateUser(users);
 		// return the view
-		return new ModelAndView("redirect:/users/");
+		return new ModelAndView("redirect:/admin/");
 	}
 	@RequestMapping(value="/image/{id}")
 	public void getImage(@PathVariable("id") int id, HttpServletRequest request, 
@@ -155,5 +158,11 @@ public class UsersController {
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
+	}
+	@RequestMapping(value="/logout")
+	public ModelAndView logout(HttpSession session) {
+		// clear the session object
+		session.invalidate();
+		return new ModelAndView("redirect:/admin/");
 	}
 }

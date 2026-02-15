@@ -10,5 +10,6 @@
     <body>
         <h1>Hello World!</h1>
         <p>This is the homepage!</p>
+        <a href="admin/login">Login</a>
     </body>
 </html>

@@ -29,9 +29,11 @@
 			</tr>
 			<tr>
 				<th colspan="2">
-					<button type="submit">Submit</button>
+					<button type="submit">Sign in</button>
 			</tr>
 		</table>
 	</form>
+	<br>
+	<a href="users/registration">New user Sign Up</a>
 </body>
 </html>
