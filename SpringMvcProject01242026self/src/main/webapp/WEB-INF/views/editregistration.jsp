@@ -1,16 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="f" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1>User Registration</h1>
-	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<%@include file="adminheader.jsp"%>
+	<h2>Edit User Registration</h2>
 	<f:form action="${contextPath}/admin/users/editsave" method="POST" modelAttribute="users" enctype="multipart/form-data">
 	    <p><f:hidden path="id"/></p>
 		<p>First Name:<f:input path="firstName" placeholder="Enter First Name" required="true"/></p>
@@ -29,5 +18,4 @@
 		<p>Upload Photo: <input type="file" id="imagefile" name="imagefile"/></p>
 		<p><button type="submit">Submit</button></p>
 	</f:form>
-</body>
-</html>
+<%@include file="footer.jsp"%> 
