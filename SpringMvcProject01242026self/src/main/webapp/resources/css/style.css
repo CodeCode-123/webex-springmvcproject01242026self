@@ -11,7 +11,7 @@ a {
 	text-decoration:none;
 }
 .top-header {
-	height: 100vh;
+	/*height: 100vh;*/
 	background-size: cover;
 	overflow: hidden;
 	color: black;
@@ -23,8 +23,8 @@ a {
 	background:#b80818;
 }
 .main-section {
-	padding-top:120px;
-	padding-bottom:120px;
+	padding-top:21px;
+	padding-bottom:21px;
 }
 /**************** NAVBAR SECTION NAVBAR SECTION NAVBAR SECTION NAVBAR SECTION NAVBAR SECTION ****************/
 .navbar-brand img {

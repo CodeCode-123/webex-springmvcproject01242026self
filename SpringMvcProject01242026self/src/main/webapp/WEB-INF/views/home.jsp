@@ -1,18 +1,28 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Home</title>
-</head>
-
-<body>
-<h1>Hello World!</h1>
-<p>This is the homepage!</p>
-<a href="admin/login">Login</a>
+<%@include file="homeheader.jsp" %>
+<div class="container-fluid">
+  <div class="banner-section">
+    <div class="row">
+      <div class="col-lg-1 col-12"></div>
+      <div class="col-lg-5 col-md-7 col-12">
+        <div class="banner-detail">
+          <h5>Best Choice</h5>
+          <h1>ITALIAN PIZZA</h1>
+          <div class="col-md-12">
+            <button class="btn button-1">Order Now</button>
+            <button class="btn button-2">Full Menu</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-5 col-12">
+        <div class="banner-img">
+          <img src="resources/images/banner.png">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!------- ADV Section ADV Section-------->
 <div class="container-fluid main-section">
 	<div class="container">
 		<div class="row">
@@ -54,19 +64,21 @@
 </div>
 <div class="row">
 <c:forEach var="item" items="${items}">
+<div class="col-lg-3 col-md-6">
 	<div class="famous-product">
 		<h2>${item.getCategory().getCategoryName()}</h2>
 		<h3>${item.getItemName()}</h3>
 		<img src="image/${item.itemId}" />
 		<div class="price">
-			<h4>${item.getItemPrice()}</h4>
+			<h4>$ ${item.getItemPrice()}</h4>
 			<p>&nbsp;</p>
 			<span> <a href="item/cart/${item.getItemId()}"><i
 					class="fa fa-plus"></i></a>
 			</span>
 		</div>
 	</div>
+</div>
 </c:forEach>
 </div>
-</body>
-</html>
+<!------FOOTER Section FOOTER Section------>
+<%@include file="homefooter.jsp"%>
