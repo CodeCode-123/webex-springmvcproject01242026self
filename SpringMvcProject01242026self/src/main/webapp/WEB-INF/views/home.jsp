@@ -1,5 +1,5 @@
 <%@include file="homeheader.jsp" %>
-<div class="container-fluid">
+<div class="container-fluid top-header" style="background-color:#b80818">
   <div class="banner-section">
     <div class="row">
       <div class="col-lg-1 col-12"></div>
@@ -20,7 +20,6 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 <!------- ADV Section ADV Section-------->
 <div class="container-fluid main-section">

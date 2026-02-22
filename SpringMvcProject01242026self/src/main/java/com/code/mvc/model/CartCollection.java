@@ -50,6 +50,17 @@ public class CartCollection {
 		}
 		return found;
 	}
+	// get cart by id
+	public Cart getCartById(int itemId) {
+		Cart cart=null; 
+		for (Cart item2: items) {
+			if (item2.getItemId() == itemId) {
+				return item2;
+			}
+		}
+		return cart;
+	}
+	
 	// get items from cart
 	public List<Cart> getAll() {
 		return items;
@@ -60,9 +71,9 @@ public class CartCollection {
 	}
 	// get Total Price
 	public double getTotalAmount() {
-		double totalPrice=0;
+		double totalPrice = 0;
 		for(Cart item2: items) {
-			totalPrice += item2.getAmount();
+			totalPrice += item2.getPrice() * item2.getQty();
 		}
 		return totalPrice;
 	}

@@ -5,12 +5,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.code.mvc.services.CategoryService;
@@ -62,8 +64,8 @@ public class HomeController {
 		model.addAttribute("error", msg);
 		return new ModelAndView("login","",model);
 	} 
-	@RequestMapping(value="/cart/{id}")
-	public ModelAndView addToCart(@PathVariable("id") int id, Model model) {
+	@RequestMapping(value="/item/cart/{id}")
+	public ModelAndView addToCart(@PathVariable("id") int id, Model model, HttpSession session) {
 		// get the item with id
 		Item item = itemService.getById(id);
 		if (item != null) {
@@ -76,12 +78,42 @@ public class HomeController {
 			cart.setQty(1);
 			// add the cart to my collection
 			// we create the object of the collection put it into the session
-			CartCollection cartCollection = (CartCollection) model.getAttribute("cartCollection");
-			if (cartCollection == null) {
+			// first check the collection object is in session
+			CartCollection cartCollection = null;
+			if (session.getAttribute("cartCollection")==null) {
 				cartCollection = new CartCollection();
+			} else {
+				cartCollection = (CartCollection) session.getAttribute("cartCollection");
 			}
+			// we have to add the cart object to the collection object
 			cartCollection.addToCart(cart);
-			model.addAttribute("cartCollection", cartCollection);
+			session.setAttribute("cartCollection", cartCollection);
+			model.addAttribute("carts", cartCollection.getAll());
+			model.addAttribute("totalAmount", cartCollection.getTotalAmount());
+			return new ModelAndView("carts","",model);
+		}
+		return new ModelAndView("redirect:/");
+	}
+	@RequestMapping(value="/item/cart/update", method=RequestMethod.POST)
+	public ModelAndView update(HttpServletRequest request, Model model, HttpSession session) {
+		int qty = Integer.parseInt(request.getParameter("qty[]").toString());
+		int id = Integer.parseInt(request.getParameter("itemId").toString());
+		CartCollection cartCollection = null;
+		if (session.getAttribute("cartCollection")==null) {
+			// create a new object
+			cartCollection = new CartCollection();
+		} else {
+			cartCollection = (CartCollection) session.getAttribute("cartCollection");
+		}
+		Cart cart = cartCollection.getCartById(id);
+		if (cart != null) {
+			cart.setQty(qty);
+			// update the cart
+			cartCollection.updateCart(cart);
+			session.setAttribute("cartCollection", cartCollection);
+			model.addAttribute("carts", cartCollection.getAll());
+			model.addAttribute("totalAmount", cartCollection.getTotalAmount());
+			return new ModelAndView("carts","",model);
 		}
 		return new ModelAndView("redirect:/");
 	}

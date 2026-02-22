@@ -23,8 +23,8 @@ a {
 	background:#b80818;
 }
 .main-section {
-	padding-top:21px;
-	padding-bottom:21px;
+	padding-top:92px;
+	padding-bottom:92px;
 }
 /**************** NAVBAR SECTION NAVBAR SECTION NAVBAR SECTION NAVBAR SECTION NAVBAR SECTION ****************/
 .navbar-brand img {
@@ -478,7 +478,7 @@ nav .social-media a{
 /**************FOOTER Section FOOTER Section FOOTER Section FOOTER Section FOOTER Section**************/
 /**************FOOTER Section FOOTER Section FOOTER Section FOOTER Section FOOTER Section**************/
 .footer-section {
-	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 16%) 0%, rgba(0, 0, 0, 0.7) 100%), url(../image/footer.jpg);
+	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 16%) 0%, rgba(0, 0, 0, 0.7) 100%);
 	background-repeat: no-repeat;
 	padding:100px 0px 0px 0px;
 	font-family: 'Raleway';

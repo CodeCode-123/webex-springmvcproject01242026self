@@ -11,7 +11,7 @@
       </div>
       <div class="col-md-4">
         <h2>
-          <img src="resources/images/logo.png">
+          <img src="${contextPath}/resources/images/logo.png">
         </h2>
       </div>
     </div>
