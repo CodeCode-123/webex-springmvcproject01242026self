@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="heading-section">
-					<h3>Carts</h3>
+					<h3>Invoice</h3>
 					<h2>Items</h2>
 					<div class="heading-borders">
 						<span class="selected"></span>
@@ -25,7 +25,6 @@
 		          <th scope="col">Price</th>
 		          <th scope="col">Qty</th>
 		          <th scope="col">value</th>
-		          <th scope="col">Action</th>
 		        </tr>
 		      </thead>
 		      <c:forEach var="item" items="${carts}">
@@ -34,8 +33,9 @@
 		          <td><img src="${contextPath}/image/${item.getItemId()}" width="50px" height="50px"/></td>
 		          <td>${item.getItemName()}</td>
 		          <td>$ ${item.getPrice()}</td>
-		          <td><input type="number" name="qty[]" id="qty" value="${item.getQty()}"/></td>
+		          <td>${item.getQty()}</td>
 		          <td>$ ${item.getAmount()}</td>
+		          <!--
 		          <td>
 		          <input type="hidden" value="${item.getItemId()}" name="itemId" id="itemId"/>
 		          <button type="submit" class="primary">
@@ -49,6 +49,7 @@
                            </svg>
 		          </a>
 		          </td>
+		          -->
 		        </tr>
 		      </form>
 		      </c:forEach>
@@ -58,12 +59,14 @@
 			      <td>&nbsp;</td>
 		      </tr>
 		      <tr>
+		        <!-- 
 		        <td colspan="6" align="right">
 		          <a href="${pageContext.request.contextPath}/checkout">Checkout</a>
 		        </td>
+		        -->
 		      </tr>
 		    </table>
-		</div>
+		    <a href="${contextPath}/"><span>Return to Home</span></a><br>
 		</div>
 	</div>
 </div>

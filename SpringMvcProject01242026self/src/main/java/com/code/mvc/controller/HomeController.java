@@ -1,6 +1,7 @@
 package com.code.mvc.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +11,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.code.mvc.services.CategoryService;
+import com.code.mvc.services.IUserService;
 import com.code.mvc.services.ItemService;
 import com.code.mvc.entity.*;
 import com.code.mvc.model.Cart;
@@ -27,6 +32,8 @@ public class HomeController {
 	CategoryService categoryService;
 	@Autowired
 	ItemService itemService;
+	@Autowired
+	IUserService userService;
 
 	@RequestMapping(value="/")
 	public ModelAndView test(HttpServletResponse response, Model model) throws IOException{
@@ -48,22 +55,48 @@ public class HomeController {
 	public ModelAndView login() {
 		return new ModelAndView("login");
 	}
-	@RequestMapping("/authentication")
-	public ModelAndView login_Authentication(HttpServletRequest request, Model model) {
-		// request has method getParameter(<name of form element> returns the value as string)
-		String username=request.getParameter("uname");
-		String password=request.getParameter("upass");
-		System.out.println("User Name: " + username);
-		System.out.println("Password: " + password);
-		// check if the username = Admin and the password = 1234
-		if (username.equals("Admin") && password.equals("1234")) {
-			model.addAttribute("uname",username);
-			return new ModelAndView("dashboard","",model);
+	@RequestMapping("/registration")
+	public ModelAndView getRegistration(Model model) {
+		// create a new users object
+		model.addAttribute("users", new Users());
+		// return the view
+		return new ModelAndView("customerreg","",model);
+	}
+	@RequestMapping(value="/save1", method=RequestMethod.POST)
+	public ModelAndView save1Registration(@ModelAttribute("users") Users users,
+			@RequestParam CommonsMultipartFile[] imagefile,
+			Model model) {
+		if (imagefile!=null && imagefile.length>0) {
+			for (CommonsMultipartFile fileup:imagefile) {
+				System.out.println("File Name: " + fileup.getOriginalFilename());
+				// convert the image to bytes
+				users.setImageData(fileup.getBytes());
+			}
 		}
-		String msg="Invalid User name & password";
-		model.addAttribute("error", msg);
+		model.addAttribute("users", users);
+		// save the object
+		userService.addUser(users);
+		return new ModelAndView("redirect:/login");
+	}
+	@RequestMapping(value="/authentication",method=RequestMethod.POST)
+	public ModelAndView validateLogin(HttpServletRequest request, Model model, HttpSession session) {
+		String userName = request.getParameter("uname");
+		String password = request.getParameter("upass");
+		//System.out.println("User Name: " + userName);
+		//System.out.println("Password: " + password);
+		Users users = userService.getUserAuthentication(userName, password);
+		if (users != null) {
+			if (users.getRole().equals("Customer")) {
+				// create the new session object and stores the user object into the session
+				session.setAttribute("users", users);
+				// redirect to dashboard
+				return new ModelAndView("redirect:/"); // end / is necessary
+			}
+		}
+		String msg = "Invalid Username or Password";
+		model.addAttribute("errmsg", msg);
 		return new ModelAndView("login","",model);
-	} 
+	}
 	@RequestMapping(value="/item/cart/{id}")
 	public ModelAndView addToCart(@PathVariable("id") int id, Model model, HttpSession session) {
 		// get the item with id
@@ -116,6 +149,35 @@ public class HomeController {
 			return new ModelAndView("carts","",model);
 		}
 		return new ModelAndView("redirect:/");
+	}
+	@RequestMapping(value="/item/cart/delete/{id}")
+	public ModelAndView deleteToCart(@PathVariable("id") int id, Model model, HttpSession session) {
+		CartCollection cartCollection = null;
+		if (session.getAttribute("cartCollection") == null) {
+			cartCollection = new CartCollection();
+		} else {
+			cartCollection = (CartCollection) session.getAttribute("cartCollection");
+		}
+		cartCollection.deleteFromCart(id);
+		session.setAttribute("cartCollection", cartCollection);
+		model.addAttribute("carts", cartCollection.getAll());
+		model.addAttribute("totalAmount", cartCollection.getTotalAmount());
+		return new ModelAndView("carts","",model);
+	}
+	@RequestMapping(value="/checkout")
+	public ModelAndView checkout(Model model, HttpSession session) {
+		if (session.getAttribute("users")==null) {
+			return new ModelAndView("redirect:/login");
+		}
+		CartCollection cartCollection=null;
+		if (session.getAttribute("cartCollection") == null) {
+			cartCollection = new CartCollection();
+		} else {
+			cartCollection = (CartCollection) session.getAttribute("cartCollection");
+		}
+		model.addAttribute("carts", cartCollection.getAll());
+		model.addAttribute("totalAmount", cartCollection.getTotalAmount());
+		return new ModelAndView("invoice","",model);
 	}
 	@RequestMapping(value="/image/{id}")
 	public void getImage(@PathVariable("id") int id, HttpServletRequest request, 
