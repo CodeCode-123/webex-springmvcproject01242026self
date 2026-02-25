@@ -2,6 +2,7 @@ package com.code.mvc.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.code.mvc.services.CategoryService;
 import com.code.mvc.services.IUserService;
+import com.code.mvc.services.ItemOrderDetailsService;
+import com.code.mvc.services.ItemOrderService;
 import com.code.mvc.services.ItemService;
 import com.code.mvc.entity.*;
 import com.code.mvc.model.Cart;
@@ -34,6 +37,10 @@ public class HomeController {
 	ItemService itemService;
 	@Autowired
 	IUserService userService;
+	@Autowired
+	ItemOrderService itemOrderService;
+	@Autowired
+	ItemOrderDetailsService itemOrderDetailsService;
 
 	@RequestMapping(value="/")
 	public ModelAndView test(HttpServletResponse response, Model model) throws IOException{
@@ -165,19 +172,53 @@ public class HomeController {
 		return new ModelAndView("carts","",model);
 	}
 	@RequestMapping(value="/checkout")
-	public ModelAndView checkout(Model model, HttpSession session) {
-		if (session.getAttribute("users")==null) {
-			return new ModelAndView("redirect:/login");
+	public String checkOut(HttpSession session,Model model,HttpServletRequest request,HttpServletResponse response)
+	{
+		if(session.getAttribute("users")==null)
+		{
+			return "redirect:/login";
 		}
-		CartCollection cartCollection=null;
-		if (session.getAttribute("cartCollection") == null) {
-			cartCollection = new CartCollection();
-		} else {
-			cartCollection = (CartCollection) session.getAttribute("cartCollection");
+		if(session.getAttribute("cartCollection")==null)
+		{
+			//the cart is empty, return to the home page
+			return "redirect:/";
 		}
-		model.addAttribute("carts", cartCollection.getAll());
-		model.addAttribute("totalAmount", cartCollection.getTotalAmount());
-		return new ModelAndView("invoice","",model);
+		Users users=(Users) session.getAttribute("users");
+		CartCollection cartCollection=	(CartCollection) session.getAttribute("cartCollection");
+		List<Cart> carts=cartCollection.getAll();
+		ItemOrder  itemOrder=new ItemOrder();
+		Date date=new Date();
+		itemOrder.setOrderDate(date.toString());
+		itemOrder.setTotalAmount(cartCollection.getTotalAmount());
+		itemOrder.setUsers(users);
+		//save the item order
+		itemOrderService.add(itemOrder);
+		//save the itemorderdetails
+		ItemOrderDetails itemOrderDetails=null;
+		for(Cart cart :carts)
+		{
+			itemOrderDetails=new ItemOrderDetails();
+			itemOrderDetails.setCategoryName(cart.getCategoryName());
+			itemOrderDetails.setItemOrder(itemOrder);
+			itemOrderDetails.setItemValue(cart.getAmount());
+			itemOrderDetails.setPrice(cart.getPrice());
+			itemOrderDetails.setProductName(cart.getItemName());
+			itemOrderDetails.setQty(cart.getQty());
+			//save the object to the database
+			itemOrderDetailsService.add(itemOrderDetails);
+		}
+		// data is not saved to the model, when open invoice, the data should be 
+		// retrieved from the database
+		return "redirect:/invoice/"+itemOrder.getOrderId();
+	}
+	@RequestMapping(value = "/invoice/{id}")
+	public ModelAndView invoice(@PathVariable("id") int id, HttpSession session, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
+		ItemOrder itemOrder = itemOrderService.getById(id);
+		List<ItemOrderDetails> itemOrderDetailsList = itemOrderDetailsService.getByOrderId(id);
+		model.addAttribute("orders", itemOrder);
+		model.addAttribute("itemOrderDetailsList", itemOrderDetailsList);
+		return new ModelAndView("invoice", "", model);
 	}
 	@RequestMapping(value="/image/{id}")
 	public void getImage(@PathVariable("id") int id, HttpServletRequest request, 

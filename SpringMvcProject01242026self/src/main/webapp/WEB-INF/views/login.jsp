@@ -1,16 +1,12 @@
-<!-- 
-<!DOCTYPE html>
+<%-- <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="../resources/style.css" />
 </head>
-<body> -->
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="f" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<body> 
+<!-- 
 <!doctype html>
 <html lang="en">
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
@@ -48,7 +44,30 @@
 <!-- Custom styles for this template -->
 <link href="${contextPath}/resources/style.css" rel="stylesheet">
 </head>
-<body>
+<body>  --%>
+<%@include file="homeheader.jsp" %>
+<link href="${contextPath}/resources/admincss/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+@media ( min-width : 768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+</style>
+<div class="container-fluid top-header" style="background-color:#b80818">
+  <div class="banner-section">
+  </div>
+</div>
 	<h1>Login</h1>
 	<form action="authentication" method="POST">
 		<table cellpadding="10" border="1" cellspacing="0">
@@ -73,7 +92,6 @@
 					<button type="submit">Sign in</button>
 			</tr>
 		</table>
-	</form>
-	<a href="registration">New user Sign Up</a>
-</body>
-</html>
+	</form><br>
+	<a href="registration">New user Sign Up</a><br>
+<%@include file="homefooter.jsp" %>

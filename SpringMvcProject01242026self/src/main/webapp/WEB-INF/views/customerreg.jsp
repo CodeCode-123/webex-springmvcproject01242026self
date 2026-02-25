@@ -1,18 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="f" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!doctype html>
-<html lang="en">
-<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="generator" content="Hugo 0.84.0">
-<title>Sign Up</title>
-
-<!-- Bootstrap core CSS -->
+<%@include file="homeheader.jsp" %>
 <link href="${contextPath}/resources/admincss/css/bootstrap.min.css"
 	rel="stylesheet">
 
@@ -31,11 +17,10 @@
 	}
 }
 </style>
-
-<!-- Custom styles for this template -->
-<link href="${contextPath}/resources/style.css" rel="stylesheet">
-</head>
-<body>
+<div class="container-fluid top-header" style="background-color:#b80818">
+  <div class="banner-section">
+  </div>
+</div>
 	<h2>Customer User Registration</h2>
 	<f:form action="save1" method="POST" modelAttribute="users"
 		enctype="multipart/form-data">
@@ -94,6 +79,5 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</f:form>
-</body>
-</html>
+<%@include file="homefooter.jsp"%>
 			

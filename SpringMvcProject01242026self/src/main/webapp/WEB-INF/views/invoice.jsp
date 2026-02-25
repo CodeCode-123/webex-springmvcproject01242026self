@@ -1,14 +1,10 @@
-<%@include file="homeheader.jsp" %>
-<div class="container-fluid top-header" style="background-color:#b80818">
-  <div class="banner-section"></div>
-</div>
-<div class="container-fluid main-section">
+<%@include file="homeheader.jsp"%>
+<div class="container-fluid  main-section">
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
 				<div class="heading-section">
-					<h3>Invoice</h3>
-					<h2>Items</h2>
+					<h2>Invoice</h2>
 					<div class="heading-borders">
 						<span class="selected"></span>
 					</div>
@@ -17,57 +13,44 @@
 		</div>
 		<div class="row">
 		<div class="table-responsive">
-		    <table class="table table-striped table-sm">
-		      <thead>
-		        <tr>
-		          <th scope="col">#</th>
-		          <th scope="col">Item Name</th>
-		          <th scope="col">Price</th>
-		          <th scope="col">Qty</th>
-		          <th scope="col">value</th>
-		        </tr>
-		      </thead>
-		      <c:forEach var="item" items="${carts}">
-		      <form action="${contextPath}/item/cart/update" method="POST">
-		        <tr>
-		          <td><img src="${contextPath}/image/${item.getItemId()}" width="50px" height="50px"/></td>
-		          <td>${item.getItemName()}</td>
-		          <td>$ ${item.getPrice()}</td>
-		          <td>${item.getQty()}</td>
-		          <td>$ ${item.getAmount()}</td>
-		          <!--
-		          <td>
-		          <input type="hidden" value="${item.getItemId()}" name="itemId" id="itemId"/>
-		          <button type="submit" class="primary">
-		            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
-                    </svg>
-		          </button>
-		          &nbsp; <a href="${contextPath}/item/cart/delete/${item.getItemId()}" onclick="return confirm('Are you sure you want to delete this item??')">
-		                   <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                           </svg>
-		          </a>
-		          </td>
-		          -->
-		        </tr>
-		      </form>
-		      </c:forEach>
-		      <tr>
-			      <td colspan="4"><h3>Total Amount</h3></td>
-			      <td align="left"><h3>$ ${totalAmount}</h3></td>
-			      <td>&nbsp;</td>
-		      </tr>
-		      <tr>
-		        <!-- 
-		        <td colspan="6" align="right">
-		          <a href="${pageContext.request.contextPath}/checkout">Checkout</a>
-		        </td>
-		        -->
-		      </tr>
-		    </table>
-		    <a href="${contextPath}/"><span>Return to Home</span></a><br>
+			<table class="table table-striped table-sm">
+				<thead>
+					<tr>
+						<th scope="col">Invoice Number</th>
+						<td>${orders.orderId}</td>
+						<th scope="col">Invoice Date</th>
+						<td>${orders.orderDate}</td>
+						<th scope="col">Invoice Amount</th>
+						<td>${orders.totalAmount}</td>
+					</tr>
+				</thead>
+			</table>
+			<table class="table table-striped table-sm">
+				<thead>
+					<tr>
+						<th scope="col">Item Name</th>
+						<th scope="col">Price</th>
+						<th scope="col">Qty</th>
+						<th scope="col">value</th>
+					</tr>
+				</thead>
+				<c:forEach var="item" items="${itemOrderDetailsList}">
+					<tr>
+						<td>${item.getProductName()}</td>
+						<td>$ ${item.getPrice()}</td>
+						<td>${item.getQty()}</td>
+						<td>$ ${item.getItemValue()}</td>
+						<td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td colspan="4"><h3>Total Amount</h3></td>
+					<td align="right"><h3>$ ${orders.totalAmount}</h3></td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
 		</div>
-	</div>
+      </div>
+    </div>
 </div>
 <%@include file="homefooter.jsp"%>
